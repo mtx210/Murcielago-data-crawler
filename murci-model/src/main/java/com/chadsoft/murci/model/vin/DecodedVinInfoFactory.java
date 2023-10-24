@@ -4,67 +4,32 @@ import com.chadsoft.murci.model.vin.enums.BodyType;
 import com.chadsoft.murci.model.vin.enums.EngineVariant;
 import com.chadsoft.murci.model.vin.enums.Market;
 import com.chadsoft.murci.model.vin.enums.TransmissionVariant;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import static com.chadsoft.murci.model.vin.VinConstants.*;
-import static com.chadsoft.murci.model.vin.VinUtils.formatVinForValidation;
 
-public class VinFactory {
+@Component
+public class DecodedVinInfoFactory {
 
-    public static Mono<Vin> createFromVin(String vin) {
+    private DecodedVinInfoFactory() {}
 
+    public static Mono<DecodedVinInfo> decodeFromVin(String vin) {
         return Mono.just(vin)
                 .map(VinUtils::formatVinForValidation)
-                .filter(VinValidator::isVinValid)
-                .switchIfEmpty(Mono.empty())
-                .map(VinFactory::buildVin);
-
-
-        vin = formatVinForValidation(vin);
-        if (VinValidator.isVinValid(vin)) {
-            if (VinUtils.isOldTypeVin(vin)) {
-                return Vin.builder()
-                        .fullVin(vin)
-                        .isOldStandard(true)
-                        .modelYear(getModelYear(vin)) 
-                        .bodyType(BodyType.COUPE) //TODO
-                        .engineVariant(EngineVariant.V12_62)
-                        .transmissionVariant(TransmissionVariant.MANUAL) //TODO
-                        .serialNumber(getOldSerialNumber(vin)) 
-                        .market(getOldMarket(vin))
-                        .isFacelift(false)
-                        .isReventon(false)
-                        .isSuperVeloce(false)
-                        .build();
-            } else {
-                return Vin.builder()
-                        .fullVin(vin)
-                        .isOldStandard(false)
-                        .modelYear(getModelYear(vin)) 
-                        .bodyType(getBodyType(vin)) 
-                        .engineVariant(getEngineVariant(vin)) 
-                        .transmissionVariant(getTransmissionVariant(vin)) 
-                        .serialNumber(getNewSerialNumber(vin)) 
-                        .market(getNewMarket(vin))
-                        .isFacelift(isFacelift(vin))
-                        .isReventon(isReventon(vin))
-                        .isSuperVeloce(isSuperVeloce(vin))
-                        .build();
-            }
-        } else {
-            return Vin.builder().build();
-        }
+                .flatMap(VinValidator::getValidVinOrError)
+                .map(DecodedVinInfoFactory::buildVin);
     }
 
-    private static Vin buildVin(String vin) {
+    private static DecodedVinInfo buildVin(String vin) {
         if (VinUtils.isOldTypeVin(vin)) {
-            return Vin.builder()
+            return DecodedVinInfo.builder()
                     .fullVin(vin)
                     .isOldStandard(true)
                     .modelYear(getModelYear(vin))
-                    .bodyType(BodyType.COUPE) //TODO
+                    .bodyType(BodyType.COUPE)
                     .engineVariant(EngineVariant.V12_62)
-                    .transmissionVariant(TransmissionVariant.MANUAL) //TODO
+                    .transmissionVariant(TransmissionVariant.MANUAL)
                     .serialNumber(getOldSerialNumber(vin))
                     .market(getOldMarket(vin))
                     .isFacelift(false)
@@ -72,7 +37,7 @@ public class VinFactory {
                     .isSuperVeloce(false)
                     .build();
         } else {
-            return Vin.builder()
+            return DecodedVinInfo.builder()
                     .fullVin(vin)
                     .isOldStandard(false)
                     .modelYear(getModelYear(vin))

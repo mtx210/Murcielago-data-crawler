@@ -1,0 +1,14 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/murci
+    username: root
+    password: root
+
+
+scheduled-tasks:
+  #  vin-wiki-cron: '0 0 5 * * *'
+  vin-wiki-cron: '0 30 0 * * *'
+
+integrations:
+  vin-wiki:
+    global-murcielago-list-url: https://rest.vinwiki.com/lists/vehicles/6860c4d5-522d-488f-afd1-fd0aeae05ffc/5000

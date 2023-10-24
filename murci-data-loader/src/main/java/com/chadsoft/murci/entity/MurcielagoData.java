@@ -1,16 +1,18 @@
-package com.chadsoft.murci.persistence.entity;
+package com.chadsoft.murci.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Date;
 
-@Entity
-@Table(name = "murcielago_data")
+@Table
 @Data
+@Builder
 public class MurcielagoData {
 
+    @Id
     private Long id;
     private String vin;
     private Date dateCreated;

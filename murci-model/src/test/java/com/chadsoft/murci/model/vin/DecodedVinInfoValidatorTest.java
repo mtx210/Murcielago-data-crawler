@@ -1,26 +1,17 @@
 package com.chadsoft.murci.model.vin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-class VinValidatorTest {
+class DecodedVinInfoValidatorTest {
 
     @ParameterizedTest(name = "{index} {0}")
     @MethodSource("isVinValidSuccessTestArguments")
     void isVinValid_success(String testName, String vin) {
-        assertTrue(VinValidator.isVinValid(vin));
+        assertTrue(VinValidator.getValidVinOrError(vin));
     }
 
     private static Stream<Arguments> isVinValidSuccessTestArguments() {
@@ -33,7 +24,7 @@ class VinValidatorTest {
     @ParameterizedTest(name = "{index} {0}")
     @MethodSource("isVinValidFailTestArguments")
     void isVinValid_fail(String testName, String vin) {
-        assertFalse(VinValidator.isVinValid(vin));
+        assertFalse(VinValidator.getValidVinOrError(vin));
     }
 
     private static Stream<Arguments> isVinValidFailTestArguments() {

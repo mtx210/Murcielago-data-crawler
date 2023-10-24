@@ -15,8 +15,6 @@
 
     <artifactId>murci-data-loader</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>murci</name>
-    <description>murci</description>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
@@ -24,24 +22,17 @@
         <dependency>
             <groupId>com.chadsoft</groupId>
             <artifactId>murci-integration-vinwiki</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.chadsoft</groupId>
-            <artifactId>murci-integration-vinwiki</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.chadsoft</groupId>
             <artifactId>murci-persistence</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.chadsoft</groupId>
             <artifactId>murci-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
