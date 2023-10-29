@@ -2,6 +2,7 @@ package com.chadsoft.murci.service;
 
 import com.chadsoft.murci.entity.MurcielagoData;
 import com.chadsoft.murci.repo.MurcielagoDataRepository;
+import com.chadsoft.murci.tasks.LoadResult;
 import com.chadsoft.murci.vin.DecodedVinInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Service
@@ -22,21 +22,12 @@ public class MurcielagoDataService {
         this.murcielagoDataRepository = murcielagoDataRepository;
     }
 
-    public Mono<MurcielagoData> save(DecodedVinInfo decodedVinInfo) {
-//        try {
-//            return murcielagoDataRepository.save(map(decodedVinInfo))
-//                    .doOnNext(murcielagoData -> {
-//                        System.out.println(murcielagoData);
-//                    });
-//        } catch (DuplicateKeyException e) {
-//            log.info("Skipping saving already existing VIN in db: {}", decodedVinInfo.getFullVin());
-//            return Mono.empty();
-//        }
-
+    public Mono<LoadResult> save(DecodedVinInfo decodedVinInfo) {
         return murcielagoDataRepository.save(map(decodedVinInfo))
+                .map(murcielagoData -> LoadResult.VALID_RECORD_SAVED)
                 .onErrorResume(DuplicateKeyException.class, e -> {
                     log.info("Skipping saving already existing VIN in db: {}", decodedVinInfo.getFullVin());
-                    return Mono.empty();
+                    return Mono.just(LoadResult.VALID_RECORD_SKIPPED);
                 });
     }
 

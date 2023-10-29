@@ -2,8 +2,8 @@ package com.chadsoft.murci.service;
 
 import com.chadsoft.murci.entity.MurcielagoInvalidData;
 import com.chadsoft.murci.repo.MurcielagoInvalidDataRepository;
+import com.chadsoft.murci.tasks.LoadResult;
 import com.chadsoft.murci.vin.exception.VinValidationException;
-import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -17,11 +17,12 @@ public class MurcielagoInvalidDataService {
 
     private final MurcielagoInvalidDataRepository murcielagoInvalidDataRepository;
 
-    public Mono<MurcielagoInvalidData> save(VinValidationException exception) {
+    public Mono<LoadResult> save(VinValidationException exception) {
         return murcielagoInvalidDataRepository.save(map(exception))
+                .map(murcielagoInvalidData -> LoadResult.INVALID_RECORD_SAVED)
                 .onErrorResume(DuplicateKeyException.class, e -> {
                     log.info("Skipping saving already existing invalid VIN in db: {}", exception.getVin());
-                    return Mono.empty();
+                    return Mono.just(LoadResult.INVALID_RECORD_SKIPPED);
                 });
     }
 

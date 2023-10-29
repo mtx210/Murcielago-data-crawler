@@ -1,6 +1,5 @@
 package com.chadsoft.murci.tasks;
 
-import com.chadsoft.murci.entity.MurcielagoData;
 import com.chadsoft.murci.vinwiki.Vehicle;
 import com.chadsoft.murci.vinwiki.VinWikiClient;
 import com.chadsoft.murci.service.MurcielagoDataService;
@@ -29,20 +28,40 @@ public class VinWikiLoader {
     @EventListener(ApplicationReadyEvent.class)
     public void loadDataFromVinWiki() {
         final long startTime = System.currentTimeMillis();
-        log.warn("Starting VinWiki data load at {}", startTime);
+        log.warn("Starting VinWiki data load");
 
-        vinWikiClient.getDataFromGlobalMurcielagoListMock()
+        vinWikiClient.getDataFromGlobalMurcielagoList()
                 .flatMapMany(response -> Flux.fromIterable(response.getVehicles()))
                 .map(Vehicle::getVin)
-                .doOnNext(this::validateAndSaveToDb)
-                .doOnComplete(() -> log.info("Ending VinWiki data load, time: {}", System.currentTimeMillis() - startTime))
+                .flatMap(this::validateAndSaveToDb)
+                .reduce(new LoadStatistics(), this::buildStatistics)
+                .doOnSuccess(loadStatistics -> logStatistics(loadStatistics, startTime))
                 .subscribe();
     }
 
-    private void validateAndSaveToDb(String vin) {
-        DecodedVinInfoFactory.decodeFromVin(vin)
+    private Mono<LoadResult> validateAndSaveToDb(String vin) {
+        return DecodedVinInfoFactory.decodeFromVin(vin)
                 .flatMap(murcielagoDataService::save)
-                .onErrorResume(VinValidationException.class, vinValidationException -> murcielagoInvalidDataService.save(vinValidationException).then(Mono.just(MurcielagoData.builder().build())))
-                .subscribe();
+                .onErrorResume(VinValidationException.class, murcielagoInvalidDataService::save);
+    }
+
+    private LoadStatistics buildStatistics(LoadStatistics loadStatistics, LoadResult loadResult) {
+        switch (loadResult) {
+            case VALID_RECORD_SAVED -> loadStatistics.incrementValidRecordsLoaded();
+            case INVALID_RECORD_SAVED -> loadStatistics.incrementInvalidRecordsLoaded();
+            case VALID_RECORD_SKIPPED -> loadStatistics.incrementValidRecordsSkipped();
+            case INVALID_RECORD_SKIPPED -> loadStatistics.incrementInvalidRecordsSkipped();
+        }
+        return loadStatistics;
+    }
+
+    private void logStatistics(LoadStatistics loadStatistics, long startTime) {
+        log.info("Ending VinWiki data load, time: {} ms", System.currentTimeMillis() - startTime);
+        log.info("VinWiki load statistics:\nNew valid records saved: {}\nNew invalid records saved: {}\nValid records skipped: {}\nInvalid records skipped: {}",
+                loadStatistics.getValidRecordsSaved(),
+                loadStatistics.getInvalidRecordsSaved(),
+                loadStatistics.getValidRecordsSkipped(),
+                loadStatistics.getInvalidRecordsSkipped()
+        );
     }
 }

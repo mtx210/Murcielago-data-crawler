@@ -92,11 +92,11 @@ public class DecodedVinInfoFactory {
     }
 
     private static boolean isFacelift(String vin) {
-        return '3' == vin.charAt(5) && '4' == vin.charAt(5);
+        return '3' == vin.charAt(5) || '4' == vin.charAt(5);
     }
 
     private static boolean isReventon(String vin) {
-        return '7' == vin.charAt(5) && '9' == vin.charAt(5);
+        return '7' == vin.charAt(5) || '9' == vin.charAt(5);
     }
 
     private static boolean isSuperVeloce(String vin) {

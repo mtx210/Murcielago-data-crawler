@@ -27,21 +27,24 @@ public class VinWikiClient {
                 .mapNotNull(HttpEntity::getBody);
     }
 
-    public Mono<VinWikiResponse> getDataFromGlobalMurcielagoListMock() {
-        return Mono.just(VinWikiResponse.builder()
-                .vehicles(
-                        List.of(
-                                Vehicle.builder()
-                                        .vin("ZHWBE16S06LA01790")
-                                        .build(),
-                                Vehicle.builder()
-                                        .vin("AAAAAAAAAAAAAAAAA")
-                                        .build(),
-                                Vehicle.builder()
-                                        .vin("ZHWBE16S06LA01790")
-                                        .build()
-                        )
-                )
-                .build());
-    }
+//    public Mono<VinWikiResponse> getDataFromGlobalMurcielagoListMock() {
+//        return Mono.just(VinWikiResponse.builder()
+//                .vehicles(
+//                        List.of(
+//                                Vehicle.builder()
+//                                        .vin("ZHWBE16S06LA01790")
+//                                        .build(),
+//                                Vehicle.builder()
+//                                        .vin("AAAAAAAAAAAAAAAAA")
+//                                        .build(),
+//                                Vehicle.builder()
+//                                        .vin("ZHWBE16S06LA01790")
+//                                        .build(),
+//                                Vehicle.builder()
+//                                        .vin("AAAAAAAAAAAAAAAAA")
+//                                        .build()
+//                        )
+//                )
+//                .build());
+//    }
 }
