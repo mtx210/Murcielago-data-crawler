@@ -34,14 +34,22 @@ class VinConstants {
             '9', BodyType.ROADSTER
     );
     static final Map<Character, EngineVariant> ALLOWED_ENGINE_CHARS = Map.of(
-            '6', EngineVariant.V12_62,
-            '7', EngineVariant.V12_65
+            '6', EngineVariant.V12_62_580HP,
+            '7', EngineVariant.V12_65_640HP,
+            '8', EngineVariant.V12_65_640HP
     );
+    static final Character NEWEST_ALLOWED_DRIVETRAIN = 'A';
     static final Map<Character, TransmissionVariant> ALLOWED_TRANSMISSION_CHARS = Map.of(
             'M', TransmissionVariant.MANUAL,
             'N', TransmissionVariant.MANUAL,
             'S', TransmissionVariant.EGEAR,
             'T', TransmissionVariant.EGEAR
+    );
+    static final Map<Character, TransmissionVariant> NEWEST_ALLOWED_ENGINE_TRANSMISSION_CHAR = Map.of(
+            'L', TransmissionVariant.MANUAL,
+            'N', TransmissionVariant.MANUAL,
+            'G', TransmissionVariant.EGEAR,
+            'H', TransmissionVariant.EGEAR
     );
     static final String ENGINE_62 = "10";
     static final Map<Character, Market> ALLOWED_OLD_MARKET_CHARS = Map.of(
@@ -53,7 +61,7 @@ class VinConstants {
             'E', Market.EUROPE,
             'U', Market.UNITED_STATES,
             'C', Market.CANADA,
-            'A', Market.ASIA
+            'A', Market.ARABIAN_COUNTRIES
     );
     static final List<Character> ALLOWED_CHECK_DIGITS_CHARS = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'X');
     static final List<Character> ALLOWED_MODEL_YEAR_DIGITS_CHARS = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A');

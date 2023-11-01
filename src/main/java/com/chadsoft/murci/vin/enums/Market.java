@@ -4,5 +4,5 @@ public enum Market {
     EUROPE,
     UNITED_STATES,
     CANADA,
-    ASIA
+    ARABIAN_COUNTRIES
 }

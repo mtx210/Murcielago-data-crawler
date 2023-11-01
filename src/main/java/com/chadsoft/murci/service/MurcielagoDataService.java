@@ -38,7 +38,7 @@ public class MurcielagoDataService {
                 .vin(decodedVinInfo.getFullVin())
                 .dateCreated(dateNow)
                 .dateLastModified(dateNow)
-                .isOldStandard(decodedVinInfo.isOldStandard())
+                .vinType(decodedVinInfo.getVinType())
                 .modelYear(decodedVinInfo.getModelYear())
                 .bodyType(decodedVinInfo.getBodyType().toString())
                 .engine(decodedVinInfo.getEngineVariant().toString())

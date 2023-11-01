@@ -27,7 +27,7 @@ class VinValidator {
         List<VinValidationRule> vinValidationRules = new ArrayList<>();
 
         vinValidationRules.addAll(getCommonValidationRules());
-        vinValidationRules.addAll(getOldOrNewValidationRules(vin));
+        vinValidationRules.addAll(getVinTypeSpecificValidationRules(vin));
 
         return vinValidationRules;
     }
@@ -38,14 +38,18 @@ class VinValidator {
                 .toList();
     }
 
-    private static List<VinValidationRule> getOldOrNewValidationRules(String vin) {
-        return VinUtils.isOldTypeVin(vin) ?
-                Arrays.stream(OldVinValidators.values())
-                        .map(OldVinValidators::getValidationFunction)
-                        .toList() :
-                Arrays.stream(NewVinValidators.values())
-                        .map(NewVinValidators::getValidationFunction)
-                        .toList();
+    private static List<VinValidationRule> getVinTypeSpecificValidationRules(String vin) {
+        return switch (VinUtils.getVinType(vin)) {
+            case MY2003 -> Arrays.stream(OldVinValidators.values())
+                    .map(OldVinValidators::getValidationFunction)
+                    .toList();
+            case MY2009 -> Arrays.stream(NewVinValidators.values())
+                    .map(NewVinValidators::getValidationFunction)
+                    .toList();
+            case MY2010 -> Arrays.stream(NewestVinValidators.values())
+                    .map(NewestVinValidators::getValidationFunction)
+                    .toList();
+        };
     }
 
     @FunctionalInterface
@@ -149,6 +153,43 @@ class VinValidator {
         private VinValidationRule validationFunction;
 
         NewVinValidators(Predicate<String> validationFilter, String failMessage) {
+            this.validationFunction = vin -> Mono.just(vin)
+                    .filter(validationFilter)
+                    .switchIfEmpty(Mono.error(new VinValidationException(vin, failMessage)));
+        }
+    }
+
+    @RequiredArgsConstructor
+    @Getter
+    private enum NewestVinValidators {
+        COUNTRY(
+                vin -> COUNTRY_ITALY_NEW == vin.charAt(1),
+                "New type VIN contains invalid country character"),
+        MANUFACTURER(
+                vin -> MANUFACTURER_NEW == vin.charAt(2),
+                "New type VIN contains invalid manufacturer character"),
+        MARKET(
+                vin -> ALLOWED_NEW_MARKET_CHARS.containsKey(vin.charAt(4)),
+                "New type VIN contains invalid market character"),
+        BODY(
+                vin -> ALLOWED_BODY_NEW_CHARS.containsKey(vin.charAt(5)),
+                "New type VIN contains invalid body character"),
+        ENGINE(
+                vin -> NEWEST_ALLOWED_DRIVETRAIN == vin.charAt(6),
+                "Newest type VIN contains invalid drivetrain character"),
+        TRANSMISSION(
+                vin -> NEWEST_ALLOWED_ENGINE_TRANSMISSION_CHAR.containsKey(vin.charAt(7)),
+                "Newest type VIN contains invalid transmission character"),
+        SERIAL_NUMBER_PREFIX(
+                vin -> VinConstants.SERIAL_NUMBER_PREFIX == vin.charAt(11),
+                "New type VIN contains invalid serial number prefix"),
+        SERIAL_NUMBER(
+                vin -> StringUtils.isNumeric(vin.substring(12)),
+                "New type VIN serial number not numeric");
+
+        private VinValidationRule validationFunction;
+
+        NewestVinValidators(Predicate<String> validationFilter, String failMessage) {
             this.validationFunction = vin -> Mono.just(vin)
                     .filter(validationFilter)
                     .switchIfEmpty(Mono.error(new VinValidationException(vin, failMessage)));

@@ -1,9 +1,6 @@
 package com.chadsoft.murci.vin;
 
-import com.chadsoft.murci.vin.enums.BodyType;
-import com.chadsoft.murci.vin.enums.EngineVariant;
-import com.chadsoft.murci.vin.enums.Market;
-import com.chadsoft.murci.vin.enums.TransmissionVariant;
+import com.chadsoft.murci.vin.enums.*;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -24,13 +21,13 @@ public class DecodedVinInfoFactory {
     }
 
     private static DecodedVinInfo buildVin(String vin) {
-        if (VinUtils.isOldTypeVin(vin)) {
-            return DecodedVinInfo.builder()
+        return switch (VinUtils.getVinType(vin)) {
+            case MY2003 -> DecodedVinInfo.builder()
                     .fullVin(vin)
-                    .isOldStandard(true)
+                    .vinType(VinType.MY2003)
                     .modelYear(getModelYear(vin))
                     .bodyType(BodyType.COUPE)
-                    .engineVariant(EngineVariant.V12_62)
+                    .engineVariant(EngineVariant.V12_62_580HP)
                     .transmissionVariant(TransmissionVariant.MANUAL)
                     .serialNumber(getOldSerialNumber(vin))
                     .market(getOldMarket(vin))
@@ -38,10 +35,9 @@ public class DecodedVinInfoFactory {
                     .isReventon(false)
                     .isSuperVeloce(false)
                     .build();
-        } else {
-            return DecodedVinInfo.builder()
+            case MY2009 -> DecodedVinInfo.builder()
                     .fullVin(vin)
-                    .isOldStandard(false)
+                    .vinType(VinType.MY2009)
                     .modelYear(getModelYear(vin))
                     .bodyType(getBodyType(vin))
                     .engineVariant(getEngineVariant(vin))
@@ -52,7 +48,70 @@ public class DecodedVinInfoFactory {
                     .isReventon(isReventon(vin))
                     .isSuperVeloce(isSuperVeloce(vin))
                     .build();
+            case MY2010 -> DecodedVinInfo.builder()
+                    .fullVin(vin)
+                    .vinType(VinType.MY2010)
+                    .modelYear(getModelYear(vin))
+                    .bodyType(getBodyType(vin))
+                    .engineVariant(get2010EngineVariant(vin))
+                    .transmissionVariant(get2010TransmissionVariant(vin))
+                    .serialNumber(getNewSerialNumber(vin))
+                    .market(getNewMarket(vin))
+                    .isFacelift(isFacelift(vin))
+                    .isReventon(isReventon(vin))
+                    .isSuperVeloce(isSuperVeloce(vin))
+                    .build();
+        };
+
+//        if (VinUtils.getVinType(vin)) {
+//            return DecodedVinInfo.builder()
+//                    .fullVin(vin)
+//                    .vinType(VinType.MY2003)
+//                    .modelYear(getModelYear(vin))
+//                    .bodyType(BodyType.COUPE)
+//                    .engineVariant(EngineVariant.V12_62_580HP)
+//                    .transmissionVariant(TransmissionVariant.MANUAL)
+//                    .serialNumber(getOldSerialNumber(vin))
+//                    .market(getOldMarket(vin))
+//                    .isFacelift(false)
+//                    .isReventon(false)
+//                    .isSuperVeloce(false)
+//                    .build();
+//        } else {
+//            return DecodedVinInfo.builder()
+//                    .fullVin(vin)
+//                    .vinType(VinType.MY2009)
+//                    .modelYear(getModelYear(vin))
+//                    .bodyType(getBodyType(vin))
+//                    .engineVariant(getEngineVariant(vin))
+//                    .transmissionVariant(getTransmissionVariant(vin))
+//                    .serialNumber(getNewSerialNumber(vin))
+//                    .market(getNewMarket(vin))
+//                    .isFacelift(isFacelift(vin))
+//                    .isReventon(isReventon(vin))
+//                    .isSuperVeloce(isSuperVeloce(vin))
+//                    .build();
+//        }
+    }
+
+    private static EngineVariant get2010EngineVariant(String vin) {
+        if ('L' == vin.charAt(7) || 'N' == vin.charAt(7)) {
+            return EngineVariant.V12_65_640HP;
         }
+        if ('G' == vin.charAt(7) || 'H' == vin.charAt(7)) {
+            return EngineVariant.V12_65_670HP;
+        }
+        return null;
+    }
+
+    private static TransmissionVariant get2010TransmissionVariant(String vin) {
+        if ('L' == vin.charAt(7) || 'G' == vin.charAt(7)) {
+            return TransmissionVariant.MANUAL;
+        }
+        if ('N' == vin.charAt(7) || 'H' == vin.charAt(7)) {
+            return TransmissionVariant.EGEAR;
+        }
+        return null;
     }
 
     private static int getModelYear(String vin) {

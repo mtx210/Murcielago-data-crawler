@@ -1,5 +1,6 @@
 package com.chadsoft.murci.entity;
 
+import com.chadsoft.murci.vin.enums.VinType;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -18,7 +19,7 @@ public class MurcielagoData {
     private String vin;
     private LocalDateTime dateCreated;
     private LocalDateTime dateLastModified;
-    private Boolean isOldStandard;
+    private VinType vinType;
     private Integer modelYear;
     private String bodyType;
     private String engine;

@@ -8,7 +8,7 @@ class DecodedVinInfoFactoryTest {
 
     @Test
     void decodeFromVin() {
-        DecodedVinInfo vin = DecodedVinInfoFactory.decodeFromVin("ZHWBE37S07LA02519").block();
+        DecodedVinInfo vin = DecodedVinInfoFactory.decodeFromVin("ZA9BC10E03LA12566").block();
         System.out.println(1);
     }
 }

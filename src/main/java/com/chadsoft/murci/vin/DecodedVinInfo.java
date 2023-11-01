@@ -1,9 +1,6 @@
 package com.chadsoft.murci.vin;
 
-import com.chadsoft.murci.vin.enums.BodyType;
-import com.chadsoft.murci.vin.enums.EngineVariant;
-import com.chadsoft.murci.vin.enums.Market;
-import com.chadsoft.murci.vin.enums.TransmissionVariant;
+import com.chadsoft.murci.vin.enums.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +9,7 @@ import lombok.Data;
 public class DecodedVinInfo implements Comparable<DecodedVinInfo> {
 
     private String fullVin;
-    private boolean isOldStandard;
+    private VinType vinType;
     private Integer modelYear;
     private BodyType bodyType;
     private EngineVariant engineVariant;
