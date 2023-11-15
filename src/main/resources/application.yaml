@@ -1,0 +1,61 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/murci?serverTimeZone=UTC
+    username: root
+    password: root
+  codec:
+    max-in-memory-size: 2048KB
+
+scheduled-tasks:
+  vin-wiki-cron: '0 0 5 * * *'
+
+integrations:
+  vin-wiki:
+    url-template: https://rest.vinwiki.com/lists/vehicles/%s/5000
+    murcielago-user-lists-ids:
+      - 6860c4d5-522d-488f-afd1-fd0aeae05ffc
+      - 08540ba2-5ad7-4637-8495-262e87c6e398
+      - ca91a08c-8f78-4d70-b06c-2936b84d159f
+      - 1444488e-9520-4171-9e83-a50ecc4fcec0
+      - b9b049d7-2b37-4953-878d-ccd7faf3ef90
+      - 1938c6fb-9e30-4519-bd3c-486d0be7abd3
+      - a086c1f9-1063-43d2-941f-3418e16143cc
+      - b588ef59-d306-477d-8b6c-446c002d2a74
+      - 1e458dfd-a04d-4686-bb60-2fdda3ee68ca
+      - ca8e9913-41e8-4c53-93ea-cc7305730e7a
+      - e49e04b4-06d2-47d9-8a4d-488fe7eb4d8a
+      - 9c1ec9f7-f0ea-4604-b2ba-fa98792b1ee3
+      - 1220f700-bbf4-41e6-8d50-3c2ab286edf9
+      - e3f7b0d0-7b2c-45b4-b8eb-824ca83c18bd
+      - 7db0f1a7-993c-43f3-8e43-9a14edb18d70
+      - 107c38a9-dbea-4a73-bbf5-bf19b1bd3d0c
+      - e75e437c-15a7-41d6-90c5-973e262c071a
+      - f5c6940d-0c84-4e19-be0e-f88e57a6f88e
+      - af27e809-fb9d-4635-9ab3-dab21a196ca8
+      - 30a6e6f5-d13c-423a-87fe-f177320db8cf
+      - fbe0091c-c4f4-4b11-abda-7042310267ac
+      - 377ae05b-d4c2-4f25-b3e2-dd6da8fd5fba
+      - 0fc2312d-e9df-42ca-b285-6546b32bd210
+      - 4dd415d2-0302-40e5-b998-f2a8af3a7d83
+      - ac696182-d336-413a-b9fd-42dc792867f7
+      - 4c4d6d8d-cd07-4912-bf95-61e8ddf95749
+      - c6315be8-054a-444a-9db2-af7b70837479
+      - 109c381f-82c8-48f2-81ca-d67eabcd276d
+      - 12dff715-1a95-4ca7-8310-d758893b0026
+      - 4d70a860-e6de-40a9-8638-19bf5feeb9c5
+      - c25071b1-2d49-42ad-a558-3c00bcafd037
+      - 43f8ce1e-3af6-4f00-b4f2-881019c97398
+      - 422418af-a00f-499b-90a9-81872f302e10
+      - a655a29d-38ba-4e9a-8cfd-1f71ffdb75d3
+      - 91d3214d-9409-4247-8e3a-ef950f5877e7
+      - c54c85e7-cca1-491c-ba04-4e37bdc58883
+      - 1ee24163-863a-4e3a-93b5-4788c6aca2c6
+      - c1eeaa12-c270-47d9-b0ae-6bac1b74fe4d
+      - a9f5bdde-fc73-4494-be1f-948169251324
+      - 7b458f00-3d29-4245-94c3-a1f466b65e0e
+      - 035a7e3e-7776-4df9-91b8-857f1bb33231
+      - d9252ed2-6b5f-4e88-8651-a1e27b232d16
+      - 07fe2dc2-f0a8-4f2a-8d14-6c4ae4981bf9
+      - 24c2f015-434b-4f5a-9e70-bea6e7e5d930
+      - 0a32e5f9-5b85-4011-b2f3-4ba2f66e3939
+      - fdd779d6-936f-42d2-a17c-3c817f596418
