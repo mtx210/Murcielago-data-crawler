@@ -1,14 +1,13 @@
-package com.chadsoft.murci.vinwiki;
+package com.chadsoft.murci.integrations.vinwiki;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
 
 import java.util.List;
 
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VinWikiResponse {
+class VinWikiResponse {
 
     private List<Vehicle> vehicles;
 

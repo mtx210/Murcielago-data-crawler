@@ -3,12 +3,11 @@ package com.chadsoft.murci.vin;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@SpringBootTest
 class DecodedVinInfoValidatorTest {
 
     @ParameterizedTest(name = "{index} {0}")
@@ -40,19 +39,4 @@ class DecodedVinInfoValidatorTest {
                         "ZHWBU37S58LA02708")
         );
     }
-
-//    @Test
-//    void foooooooooooo() throws Exception {
-//        ObjectMapper mapper = new ObjectMapper();
-//        VinWikiResponse response = mapper.readValue(new File("src/test/resources/files/response.json"), VinWikiResponse.class);
-//
-//        List<String> sortedVins = response.getVehicles().stream()
-//                .map(vehicle -> VinFactory.createFromVin(vehicle.getVin()))
-//                .filter(vin -> StringUtils.isNotEmpty(vin.getFullVin()))
-//                .sorted()
-//                .map(Vin::getFullVin)
-//                .toList();
-//
-//        mapper.writeValue(new File("src/test/resources/files/sorted_vins.json"), sortedVins);
-//    }
 }

@@ -1,4 +1,4 @@
-package com.chadsoft.murci.entity;
+package com.chadsoft.murci.persistence.entity;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +14,6 @@ public class MurcielagoInvalidData {
     private Long id;
     private String vin;
     private String validationFailReason;
+    private Boolean isManuallyReviewed;
+    private String validVinFound;
 }

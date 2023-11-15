@@ -1,7 +1,6 @@
 package com.chadsoft.murci.tasks;
 
-import com.chadsoft.murci.vinwiki.Vehicle;
-import com.chadsoft.murci.vinwiki.VinWikiClient;
+import com.chadsoft.murci.integrations.vinwiki.VinWikiService;
 import com.chadsoft.murci.service.MurcielagoDataService;
 import com.chadsoft.murci.service.MurcielagoInvalidDataService;
 import com.chadsoft.murci.vin.DecodedVinInfoFactory;
@@ -12,7 +11,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -20,7 +18,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class VinWikiLoader {
 
-    private final VinWikiClient vinWikiClient;
+    private final VinWikiService vinWikiService;
     private final MurcielagoDataService murcielagoDataService;
     private final MurcielagoInvalidDataService murcielagoInvalidDataService;
 
@@ -30,9 +28,7 @@ public class VinWikiLoader {
         final long startTime = System.currentTimeMillis();
         log.warn("Starting VinWiki data load");
 
-        vinWikiClient.getDataFromGlobalMurcielagoList()
-                .flatMapMany(response -> Flux.fromIterable(response.getVehicles()))
-                .map(Vehicle::getVin)
+        vinWikiService.getVinsFromVinWikiUserLists()
                 .flatMap(this::validateAndSaveToDb)
                 .reduce(new LoadStatistics(), this::buildStatistics)
                 .doOnSuccess(loadStatistics -> logStatistics(loadStatistics, startTime))

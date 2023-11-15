@@ -1,4 +1,4 @@
-package com.chadsoft.murci.entity;
+package com.chadsoft.murci.persistence.entity;
 
 import com.chadsoft.murci.vin.enums.VinType;
 import lombok.Builder;

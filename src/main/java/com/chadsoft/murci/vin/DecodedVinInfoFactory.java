@@ -1,16 +1,16 @@
 package com.chadsoft.murci.vin;
 
 import com.chadsoft.murci.vin.enums.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import static com.chadsoft.murci.vin.VinConstants.*;
 
-
 @Component
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DecodedVinInfoFactory {
-
-    private DecodedVinInfoFactory() {}
 
     public static Mono<DecodedVinInfo> decodeFromVin(String vin) {
         return Mono.just(vin)
@@ -62,36 +62,6 @@ public class DecodedVinInfoFactory {
                     .isSuperVeloce(isSuperVeloce(vin))
                     .build();
         };
-
-//        if (VinUtils.getVinType(vin)) {
-//            return DecodedVinInfo.builder()
-//                    .fullVin(vin)
-//                    .vinType(VinType.MY2003)
-//                    .modelYear(getModelYear(vin))
-//                    .bodyType(BodyType.COUPE)
-//                    .engineVariant(EngineVariant.V12_62_580HP)
-//                    .transmissionVariant(TransmissionVariant.MANUAL)
-//                    .serialNumber(getOldSerialNumber(vin))
-//                    .market(getOldMarket(vin))
-//                    .isFacelift(false)
-//                    .isReventon(false)
-//                    .isSuperVeloce(false)
-//                    .build();
-//        } else {
-//            return DecodedVinInfo.builder()
-//                    .fullVin(vin)
-//                    .vinType(VinType.MY2009)
-//                    .modelYear(getModelYear(vin))
-//                    .bodyType(getBodyType(vin))
-//                    .engineVariant(getEngineVariant(vin))
-//                    .transmissionVariant(getTransmissionVariant(vin))
-//                    .serialNumber(getNewSerialNumber(vin))
-//                    .market(getNewMarket(vin))
-//                    .isFacelift(isFacelift(vin))
-//                    .isReventon(isReventon(vin))
-//                    .isSuperVeloce(isSuperVeloce(vin))
-//                    .build();
-//        }
     }
 
     private static EngineVariant get2010EngineVariant(String vin) {
@@ -123,23 +93,23 @@ public class DecodedVinInfoFactory {
     }
 
     private static BodyType getBodyType(String vin) {
-        return ALLOWED_BODY_NEW_CHARS.get(vin.charAt(5));
+        return MY2009_ALLOWED_BODY_CHARS.get(vin.charAt(5));
     }
     
     private static EngineVariant getEngineVariant(String vin) {
-        return ALLOWED_ENGINE_CHARS.get(vin.charAt(6));
+        return MY2009_ALLOWED_ENGINE_CHARS.get(vin.charAt(6));
     }
 
     private static TransmissionVariant getTransmissionVariant(String vin) {
-        return ALLOWED_TRANSMISSION_CHARS.get(vin.charAt(7));
+        return MY2009_ALLOWED_TRANSMISSION_CHARS.get(vin.charAt(7));
     }
 
     private static Market getOldMarket(String vin) {
-        return ALLOWED_OLD_MARKET_CHARS.get(vin.charAt(7));
+        return MY2003_ALLOWED_MARKET_CHARS.get(vin.charAt(7));
     }
 
     private static Market getNewMarket(String vin) {
-        return ALLOWED_NEW_MARKET_CHARS.get(vin.charAt(4));
+        return MY2009_ALLOWED_MARKET_CHARS.get(vin.charAt(4));
     }
 
     private static Integer getOldSerialNumber(String vin) {

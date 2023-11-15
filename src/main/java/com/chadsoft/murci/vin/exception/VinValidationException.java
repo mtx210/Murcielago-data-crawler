@@ -1,5 +1,8 @@
 package com.chadsoft.murci.vin.exception;
 
+import lombok.Getter;
+
+@Getter
 public class VinValidationException extends Exception {
 
     private final String vin;
@@ -9,13 +12,5 @@ public class VinValidationException extends Exception {
         super();
         this.vin = vin;
         this.validationFailReason = validationFailReason;
-    }
-
-    public String getVin() {
-        return vin;
-    }
-
-    public String getValidationFailReason() {
-        return validationFailReason;
     }
 }

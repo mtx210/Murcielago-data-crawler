@@ -1,7 +1,7 @@
 package com.chadsoft.murci.service;
 
-import com.chadsoft.murci.entity.MurcielagoInvalidData;
-import com.chadsoft.murci.repo.MurcielagoInvalidDataRepository;
+import com.chadsoft.murci.persistence.entity.MurcielagoInvalidData;
+import com.chadsoft.murci.persistence.repo.MurcielagoInvalidDataRepository;
 import com.chadsoft.murci.tasks.LoadResult;
 import com.chadsoft.murci.vin.exception.VinValidationException;
 import lombok.RequiredArgsConstructor;
