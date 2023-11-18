@@ -22,6 +22,8 @@ public class DecodedVinInfo implements Comparable<DecodedVinInfo> {
 
     @Override
     public int compareTo(DecodedVinInfo o) {
-        return this.modelYear.compareTo(o.modelYear) == 0 ? 0 : this.serialNumber.compareTo(o.serialNumber);
+        return this.modelYear.compareTo(o.modelYear) != 0 ?
+                this.modelYear.compareTo(o.modelYear) :
+                this.serialNumber.compareTo(o.serialNumber);
     }
 }

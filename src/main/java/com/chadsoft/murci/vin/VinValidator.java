@@ -102,19 +102,19 @@ class VinValidator {
     private enum ModelYear2003VinValidators {
         COUNTRY(
                 vin -> MY2003_COUNTRY_ITALY == vin.charAt(1),
-                "Old type VIN contains invalid country character"),
+                "MY2003 type VIN contains invalid country character"),
         MANUFACTURER(
                 vin -> MY2003_MANUFACTURER_LAMBORGHINI == vin.charAt(2) && MY2003_MANUFACTURER_SUFFIX_LAMBORGHINI.equals(vin.substring(11, 14)),
-                "Old type VIN contains invalid manufacturer info"),
+                "MY2003 type VIN contains invalid manufacturer info"),
         BODY(
                 vin -> MY2003_BODY == vin.charAt(4),
-                "Old type VIN contains invalid body character"),
+                "MY2003 type VIN contains invalid body character"),
         ENGINE(
                 vin -> MY2003_ENGINE_62.equals(vin.substring(5, 7)),
-                "Old type VIN contains invalid engine code"),
+                "MY2003 type VIN contains invalid engine code"),
         MARKET(
                 vin -> MY2003_ALLOWED_MARKET_CHARS.containsKey(vin.charAt(7)),
-                "Old type VIN contains invalid market character");
+                "MY2003 type VIN contains invalid market character");
 
         private VinValidationRule validationFunction;
 
@@ -130,28 +130,28 @@ class VinValidator {
     private enum ModelYear2009VinValidators {
         COUNTRY(
                 vin -> MY2009_COUNTRY_ITALY == vin.charAt(1),
-                "New type VIN contains invalid country character"),
+                "MY2009 type VIN contains invalid country character"),
         MANUFACTURER(
                 vin -> MY2009_MANUFACTURER_LAMBORGHINI == vin.charAt(2),
-                "New type VIN contains invalid manufacturer character"),
+                "MY2009 type VIN contains invalid manufacturer character"),
         MARKET(
                 vin -> MY2009_ALLOWED_MARKET_CHARS.containsKey(vin.charAt(4)),
-                "New type VIN contains invalid market character"),
+                "MY2009 type VIN contains invalid market character"),
         BODY(
                 vin -> MY2009_ALLOWED_BODY_CHARS.containsKey(vin.charAt(5)),
-                "New type VIN contains invalid body character"),
+                "MY2009 type VIN contains invalid body character"),
         ENGINE(
                 vin -> MY2009_ALLOWED_ENGINE_CHARS.containsKey(vin.charAt(6)),
-                "New type VIN contains invalid engine character"),
+                "MY2009 type VIN contains invalid engine character"),
         TRANSMISSION(
                 vin -> MY2009_ALLOWED_TRANSMISSION_CHARS.containsKey(vin.charAt(7)),
-                "New type VIN contains invalid transmission character"),
+                "MY2009 type VIN contains invalid transmission character"),
         SERIAL_NUMBER_PREFIX(
                 vin -> VinConstants.MY2009_SERIAL_NUMBER_PREFIX == vin.charAt(11),
-                "New type VIN contains invalid serial number prefix"),
+                "MY2009 type VIN contains invalid serial number prefix"),
         SERIAL_NUMBER(
                 vin -> StringUtils.isNumeric(vin.substring(12)),
-                "New type VIN serial number not numeric");
+                "MY2009 type VIN serial number not numeric");
 
         private VinValidationRule validationFunction;
 
@@ -167,28 +167,28 @@ class VinValidator {
     private enum ModelYear2010VinValidators {
         COUNTRY(
                 vin -> MY2009_COUNTRY_ITALY == vin.charAt(1),
-                "New type VIN contains invalid country character"),
+                "MY2009 type VIN contains invalid country character"),
         MANUFACTURER(
                 vin -> MY2009_MANUFACTURER_LAMBORGHINI == vin.charAt(2),
-                "New type VIN contains invalid manufacturer character"),
+                "MY2009 type VIN contains invalid manufacturer character"),
         MARKET(
                 vin -> MY2009_ALLOWED_MARKET_CHARS.containsKey(vin.charAt(4)),
-                "New type VIN contains invalid market character"),
+                "MY2009 type VIN contains invalid market character"),
         BODY(
                 vin -> MY2009_ALLOWED_BODY_CHARS.containsKey(vin.charAt(5)),
-                "New type VIN contains invalid body character"),
+                "MY2009 type VIN contains invalid body character"),
         ENGINE(
                 vin -> MY2010_ALLOWED_DRIVETRAIN_CHARS.contains(vin.charAt(6)),
-                "Newest type VIN contains invalid drivetrain character"),
+                "MY2010 type VIN contains invalid drivetrain character"),
         TRANSMISSION(
                 vin -> MY2010_ALLOWED_TRANSMISSION_CHARS.containsKey(vin.charAt(7)),
-                "Newest type VIN contains invalid transmission character"),
+                "MY2010 type VIN contains invalid transmission character"),
         SERIAL_NUMBER_PREFIX(
                 vin -> VinConstants.MY2009_SERIAL_NUMBER_PREFIX == vin.charAt(11),
-                "New type VIN contains invalid serial number prefix"),
+                "MY2009 type VIN contains invalid serial number prefix"),
         SERIAL_NUMBER(
                 vin -> StringUtils.isNumeric(vin.substring(12)),
-                "New type VIN serial number not numeric");
+                "MY2009 type VIN serial number not numeric");
 
         private VinValidationRule validationFunction;
 

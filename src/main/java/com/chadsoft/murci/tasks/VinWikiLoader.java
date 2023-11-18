@@ -37,8 +37,8 @@ public class VinWikiLoader {
 
     private Mono<LoadResult> validateAndSaveToDb(String vin) {
         return DecodedVinInfoFactory.decodeFromVin(vin)
-                .flatMap(murcielagoDataService::save)
-                .onErrorResume(VinValidationException.class, murcielagoInvalidDataService::save);
+                .flatMap(murcielagoDataService::saveVinInfoInDb)
+                .onErrorResume(VinValidationException.class, murcielagoInvalidDataService::saveInvalidVinInfoInDb);
     }
 
     private LoadStatistics buildStatistics(LoadStatistics loadStatistics, LoadResult loadResult) {

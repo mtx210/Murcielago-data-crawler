@@ -1,9 +1,11 @@
 package com.chadsoft.murci.integrations.vinwiki;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 class Vehicle {
 
     private String make;

@@ -20,8 +20,8 @@ public class MurcielagoDataService {
 
     private final MurcielagoDataRepository murcielagoDataRepository;
 
-    public Mono<LoadResult> save(DecodedVinInfo decodedVinInfo) {
-        return murcielagoDataRepository.save(map(decodedVinInfo))
+    public Mono<LoadResult> saveVinInfoInDb(DecodedVinInfo decodedVinInfo) {
+        return murcielagoDataRepository.save(mapDecodedVinInfoToEntity(decodedVinInfo))
                 .map(murcielagoData -> LoadResult.VALID_RECORD_SAVED)
                 .onErrorResume(DuplicateKeyException.class, e -> {
                     log.info("Skipping saving already existing VIN in db: {}", decodedVinInfo.getFullVin());
@@ -29,7 +29,7 @@ public class MurcielagoDataService {
                 });
     }
 
-    private MurcielagoData map(DecodedVinInfo decodedVinInfo) {
+    private MurcielagoData mapDecodedVinInfoToEntity(DecodedVinInfo decodedVinInfo) {
         LocalDateTime dateNow = LocalDateTime.now();
 
         return MurcielagoData.builder()

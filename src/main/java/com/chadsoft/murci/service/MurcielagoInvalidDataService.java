@@ -17,8 +17,8 @@ public class MurcielagoInvalidDataService {
 
     private final MurcielagoInvalidDataRepository murcielagoInvalidDataRepository;
 
-    public Mono<LoadResult> save(VinValidationException exception) {
-        return murcielagoInvalidDataRepository.save(map(exception))
+    public Mono<LoadResult> saveInvalidVinInfoInDb(VinValidationException exception) {
+        return murcielagoInvalidDataRepository.save(mapVinValidationExceptionToEntity(exception))
                 .map(murcielagoInvalidData -> LoadResult.INVALID_RECORD_SAVED)
                 .onErrorResume(DuplicateKeyException.class, e -> {
                     log.info("Skipping saving already existing invalid VIN in db: {}", exception.getVin());
@@ -26,7 +26,7 @@ public class MurcielagoInvalidDataService {
                 });
     }
 
-    private MurcielagoInvalidData map(VinValidationException exception) {
+    private MurcielagoInvalidData mapVinValidationExceptionToEntity(VinValidationException exception) {
         return MurcielagoInvalidData.builder()
                 .vin(exception.getVin())
                 .validationFailReason(exception.getValidationFailReason())
