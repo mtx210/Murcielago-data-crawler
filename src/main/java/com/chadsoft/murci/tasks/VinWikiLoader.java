@@ -26,7 +26,7 @@ public class VinWikiLoader {
     @EventListener(ApplicationReadyEvent.class)
     public void loadDataFromVinWiki() {
         final long startTime = System.currentTimeMillis();
-        log.warn("Starting VinWiki data load");
+        log.info("Starting VinWiki data load");
 
         vinWikiService.getVinsFromVinWikiUserLists()
                 .flatMap(this::validateAndSaveToDb)
