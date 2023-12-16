@@ -1,6 +1,7 @@
 package com.chadsoft.murci.integrations.vinwiki;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -16,13 +17,23 @@ public class VinWikiService {
     public Flux<String> getVinsFromVinWikiUserLists() {
         return Flux.fromIterable(getMurcielagoUserListsUrls())
                 .flatMap(vinWikiClient::getVehicleDataFromUserList)
-                .flatMap(vinWikiResponse -> Flux.fromIterable(vinWikiResponse.getVehicles()))
-                .map(Vehicle::getVin);
+                .flatMap(this::extractVinsFromResponse);
     }
 
     private List<String> getMurcielagoUserListsUrls() {
         return properties.getMurcielagoUserListsIds().stream()
                 .map(listId -> String.format(properties.getUrlTemplate(), listId))
                 .toList();
+    }
+
+    private Flux<String> extractVinsFromResponse(VinWikiResponse vinWikiResponse) {
+        return vinWikiResponse.getVehicles() == null ? Flux.empty() : Flux.fromIterable(vinWikiResponse.getVehicles())
+                .flatMap(vehicle -> {
+                    if (StringUtils.isNotBlank(vehicle.getVin())) {
+                        return Flux.just(vehicle.getVin());
+                    } else {
+                        return Flux.empty();
+                    }
+                });
     }
 }

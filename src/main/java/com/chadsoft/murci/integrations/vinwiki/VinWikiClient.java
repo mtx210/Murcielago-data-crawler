@@ -21,10 +21,16 @@ class VinWikiClient {
                 .retrieve()
                 .toEntity(VinWikiResponse.class)
                 .mapNotNull(HttpEntity::getBody)
-                .doOnNext(vinWikiResponse ->
-                        log.info("Retrieved {} vehicle data from list {}",
-                                vinWikiResponse.getVehicles().size(),
-                                userListUrl)
-                );
+                .doOnNext(vinWikiResponse -> logResults(vinWikiResponse, userListUrl));
+    }
+
+    private void logResults(VinWikiResponse vinWikiResponse, String userListUrl) {
+        if (vinWikiResponse.getVehicles() != null) {
+            log.info("Retrieved {} vehicle data from list {}",
+                    vinWikiResponse.getVehicles().size(),
+                    userListUrl);
+        } else {
+            log.warn("User list of id: {} contains no vehicle data", userListUrl);
+        }
     }
 }
