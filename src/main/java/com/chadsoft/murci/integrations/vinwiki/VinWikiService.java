@@ -27,17 +27,13 @@ public class VinWikiService {
     }
 
     private Flux<String> extractVinsFromResponse(VinWikiResponse vinWikiResponse) {
-        if (vinWikiResponse.getVehicles() != null) {
-            return Flux.fromIterable(vinWikiResponse.getVehicles())
-                    .flatMap(vehicle -> {
-                        if (StringUtils.isNotBlank(vehicle.getVin())) {
-                            return Flux.just(vehicle.getVin());
-                        } else {
-                            return Flux.empty();
-                        }
-                    });
-        } else {
-            return Flux.empty();
-        }
+        return vinWikiResponse.getVehicles() == null ? Flux.empty() : Flux.fromIterable(vinWikiResponse.getVehicles())
+                .flatMap(vehicle -> {
+                    if (StringUtils.isNotBlank(vehicle.getVin())) {
+                        return Flux.just(vehicle.getVin());
+                    } else {
+                        return Flux.empty();
+                    }
+                });
     }
 }
